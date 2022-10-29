@@ -1,0 +1,22 @@
+{
+    "name": "d-logger",
+    "version": "0.0.1",
+    "author": {
+        "name": "Danila Ivanov",
+        "email": "danila.a.ivanov@d-labs.ru"
+    },
+    "description": "Logger",
+    "license": null,
+    "scripts": {
+    },
+    "dependencies": {
+        "moment": "=2.29.4",
+        "node-emojify": "=0.0.15"
+    },
+    "devDependencies": {
+    },
+    "peerDependencies": {
+    },
+    "main": "./src/index.js",
+    "unpkg": "./src/index.js"
+}
