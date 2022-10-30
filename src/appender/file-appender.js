@@ -11,14 +11,14 @@ const defaultConfig = {
     numberOfFiles: process.env.VUE_APP_LOG_FILE_COUNT || 5,
     isRotatingFiles: false,
     template: createTemplate(
-            format.level(),
-            format.text(' - '),
-            format.date('DD.MM.YYYY HH:mm:ss'),
-            format.text(' - '),
-            format.location(true),
-            format.newLine(),
-            format.message(),
-            format.newLine()
+        format.level(),
+        format.text(' - '),
+        format.date('DD.MM.YYYY HH:mm:ss'),
+        format.text(' - '),
+        format.location(true),
+        format.newLine(),
+        format.message(),
+        format.newLine()
     ),
 };
 

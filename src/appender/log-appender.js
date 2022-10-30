@@ -1,13 +1,6 @@
 import {LOG_LEVEL} from "../constants";
 import {isAllowedLevel} from "../utils";
 
-class Info {
-    date = null;
-    level = null;
-    message = null;
-    location = null;
-}
-
 function defaultConfig() {
     return {
         format: val => val,

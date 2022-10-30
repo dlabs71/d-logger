@@ -29,12 +29,12 @@ export class DLogger {
 
     addFileAppender(pathToDir, isRotatingFiles = false, filePrefix = null, level = null) {
         this.config.appenders.push(
-                new FileAppender({
-                    level: level || this.config.level,
-                    directory: pathToDir,
-                    filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || "app",
-                    isRotatingFiles: isRotatingFiles
-                })
+            new FileAppender({
+                level: level || this.config.level,
+                directory: pathToDir,
+                filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || "app",
+                isRotatingFiles: isRotatingFiles
+            })
         )
     }
 

@@ -6,17 +6,46 @@
         "email": "danila.a.ivanov@d-labs.ru"
     },
     "description": "Logger",
-    "license": null,
+    "license": "MIT",
     "scripts": {
+        "build": "node build/build.js",
+        "test": "jasmine JASMINE_CONFIG_PATH=test/jasmine.json"
     },
     "dependencies": {
         "moment": "=2.29.4",
         "node-emojify": "=0.0.15"
     },
     "devDependencies": {
+        "@babel/core": "^7.19.6",
+        "@babel/preset-env": "=7.18.10",
+        "@babel/plugin-transform-runtime": "^7.19.6",
+        "@rollup/plugin-babel": "^6.0.2",
+        "@rollup/plugin-node-resolve": "^15.0.1",
+        "@rollup/plugin-commonjs": "^23.0.2",
+        "babelrc-rollup": "^3.0.0",
+        "eslint": "^8.26.0",
+        "eslint-config-vue": "^2.0.2",
+        "eslint-plugin-vue": "^9.6.0",
+        "jasmine": "^2.5.2",
+        "rollup": "^3.2.3",
+        "rollup-plugin-uglify": "^6.0.4",
+        "vue": "^2.6.14"
     },
-    "peerDependencies": {
+    "peerDependencies": {},
+    "main": "dist/d-logger.min.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dlabs71/d-logger.git"
     },
-    "main": "./src/index.js",
-    "unpkg": "./src/index.js"
+    "keywords": [
+        "vue",
+        "logger",
+        "log",
+        "jslog",
+        "electron"
+    ],
+    "bugs": {
+        "url": "https://github.com/dlabs71/d-logger/issues"
+    },
+    "homepage": "https://github.com/dlabs71/d-logger#readme"
 }

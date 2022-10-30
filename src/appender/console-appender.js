@@ -6,11 +6,11 @@ const defaultConfig = {
     level: 'info',
     colorize: true,
     template: createTemplate(
-            format.levelDate('DD.MM.YYYY HH:mm:ss'),
-            format.newLine(),
-            format.location(),
-            format.newLine(),
-            format.message(),
+        format.levelDate('DD.MM.YYYY HH:mm:ss'),
+        format.newLine(),
+        format.location(),
+        format.newLine(),
+        format.message(),
     ),
 };
 
