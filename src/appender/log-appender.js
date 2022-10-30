@@ -1,5 +1,5 @@
-import {LOG_LEVEL} from "../constants";
-import {isAllowedLevel} from "../utils";
+import {LOG_LEVEL} from "../constants.js";
+import {isAllowedLevel} from "../utils.js";
 
 function defaultConfig() {
     return {

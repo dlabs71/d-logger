@@ -1,6 +1,6 @@
 import moment from "moment";
 import emojify from "node-emojify";
-import {LOG_LEVEL_NUMBER} from "./constants";
+import {LOG_LEVEL_NUMBER} from "./constants.js";
 
 export function getLocation(stepInStack = 1) {
     try {

@@ -1,5 +1,5 @@
-import {LogAppender} from "./log-appender";
-import {createTemplate, format, isError} from "../utils";
+import {LogAppender} from "./log-appender.js";
+import {createTemplate, format, isError} from "../utils.js";
 import fs from 'fs';
 import {join} from 'path';
 import moment from "moment";

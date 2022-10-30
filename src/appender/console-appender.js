@@ -1,6 +1,6 @@
-import {LogAppender} from "./log-appender";
-import {createTemplate, format, isError} from "../utils";
-import {LOG_LEVEL_COLOR} from "../constants";
+import {LogAppender} from "./log-appender.js";
+import {createTemplate, format, isError} from "../utils.js";
+import {LOG_LEVEL_COLOR} from "../constants.js";
 
 const defaultConfig = {
     level: 'info',

@@ -1,6 +1,6 @@
-import {ConsoleAppender} from "./appender/console-appender";
-import {getLocation, isAllowedLevel} from "./utils";
-import {FileAppender} from "./appender/file-appender";
+import {ConsoleAppender} from "./appender/console-appender.js";
+import {getLocation, isAllowedLevel} from "./utils.js";
+import {FileAppender} from "./appender/file-appender.js";
 
 const defaultConfig = {
     appenders: [],
@@ -45,6 +45,7 @@ export class DLogger {
         }
 
         return (...strings) => {
+            // console.log(strings);
             return this.config.appenders.forEach((appender) => {
                 if (!appender.isAllowed(level)) {
                     return null;

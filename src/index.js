@@ -1,8 +1,8 @@
-import DLoggerPlugin from './d-logger-plugin';
-import $log, {DLogger} from './d-logger';
-import {ConsoleAppender} from "./appender/console-appender";
-import {FileAppender} from "./appender/file-appender";
-import {LogAppender} from "./appender/log-appender";
+import DLoggerPlugin from './d-logger-plugin.js';
+import $log, {DLogger} from './d-logger.js';
+import {ConsoleAppender} from "./appender/console-appender.js";
+import {FileAppender} from "./appender/file-appender.js";
+import {LogAppender} from "./appender/log-appender.js";
 
 export {
     ConsoleAppender,
