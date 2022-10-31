@@ -15,7 +15,7 @@ export class DLogger {
     }
 
     configure(config) {
-        this.config = {...defaultConfig, ...config};
+        this.config = Object.assign({}, {...defaultConfig, ...config});
         this.config.appenders.push(new ConsoleAppender({level: this.config.level}));
         this.emerg = this.log('emerg');
         this.alert = this.log('alert');
@@ -45,7 +45,6 @@ export class DLogger {
         }
 
         return (...strings) => {
-            // console.log(strings);
             return this.config.appenders.forEach((appender) => {
                 if (!appender.isAllowed(level)) {
                     return null;
