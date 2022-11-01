@@ -1,23 +1,24 @@
-import {LogAppender} from "./log-appender.js";
-import {createTemplate, format, isError} from "../utils.js";
-import {LOG_LEVEL_COLOR} from "../constants.js";
+import LogAppender from './log-appender.js';
+import { createTemplate, format, isError } from '../utils.js';
+import { LOG_LEVEL_COLOR } from '../constants.js';
 
-const defaultConfig = {
-    level: 'info',
-    colorize: true,
-    template: createTemplate(
-        format.levelDate('DD.MM.YYYY HH:mm:ss'),
-        format.newLine(),
-        format.location(),
-        format.newLine(),
-        format.message(),
-    ),
-};
+function defaultConfig() {
+    return {
+        level: 'info',
+        colorize: true,
+        template: createTemplate(
+            format.levelDate('DD.MM.YYYY HH:mm:ss'),
+            format.newLine(),
+            format.location(),
+            format.newLine(),
+            format.message(),
+        ),
+    };
+}
 
-export class ConsoleAppender extends LogAppender {
-
+export default class ConsoleAppender extends LogAppender {
     constructor(unsafeConfig) {
-        const config = {...defaultConfig, ...unsafeConfig};
+        const config = { ...defaultConfig(), ...unsafeConfig };
         super(config);
     }
 
@@ -36,15 +37,17 @@ export class ConsoleAppender extends LogAppender {
     }
 
     __getConsoleMethod(level) {
+        // eslint-disable-next-line no-console
         const method = console[level];
         if (method) {
             return method;
         }
+        // eslint-disable-next-line no-console
         return console.log;
     }
 
-    log({message, level}) {
-        let msg = message;
+    log({ message, level }) {
+        const msg = message;
         const logToConsole = this.__getConsoleMethod(level);
 
         if (this.config.colorize) {

@@ -6,5 +6,5 @@ export default {
             $log.configure(opt.logConfig);
         }
         Vue.prototype.$log = $log;
-    }
-}
+    },
+};

@@ -9,7 +9,8 @@
     "license": "MIT",
     "scripts": {
         "build": "npx rollup -c rollup.config.mjs",
-        "test": "jasmine --reporter=jasmine-console-reporter --config=test/jasmine.json"
+        "test": "jasmine --reporter=jasmine-console-reporter --config=test/jasmine.json",
+        "lint": "npx eslint --fix ./"
     },
     "dependencies": {
         "moment": "=2.29.4",
@@ -24,6 +25,8 @@
         "@rollup/plugin-commonjs": "^23.0.2",
         "@rollup/plugin-node-resolve": "^15.0.1",
         "eslint": "^8.26.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.26.0",
         "jasmine": "^4.5.0",
         "jasmine-console-reporter": "^3.1.0",
         "rollup": "^2.68.0",

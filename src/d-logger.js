@@ -1,11 +1,13 @@
-import {ConsoleAppender} from "./appender/console-appender.js";
-import {getLocation, isAllowedLevel} from "./utils.js";
-import {FileAppender} from "./appender/file-appender.js";
+import ConsoleAppender from './appender/console-appender.js';
+import { getLocation, isAllowedLevel } from './utils.js';
+import FileAppender from './appender/file-appender.js';
 
-const defaultConfig = {
-    appenders: [],
-    level: process.argv.includes("--debug-mode") ? "debug" : process.env.VUE_APP_LOG_LEVEL || 'debug',
-};
+function defaultConfig() {
+    return {
+        appenders: [],
+        level: process.argv.includes('--debug-mode') ? 'debug' : process.env.VUE_APP_LOG_LEVEL || 'debug',
+    };
+}
 
 export class DLogger {
     config = null;
@@ -15,8 +17,8 @@ export class DLogger {
     }
 
     configure(config) {
-        this.config = Object.assign({}, {...defaultConfig, ...config});
-        this.config.appenders.push(new ConsoleAppender({level: this.config.level}));
+        this.config = { ...defaultConfig(), ...config };
+        this.config.appenders.push(new ConsoleAppender({ level: this.config.level }));
         this.emerg = this.log('emerg');
         this.alert = this.log('alert');
         this.crit = this.log('crit');
@@ -32,44 +34,39 @@ export class DLogger {
             new FileAppender({
                 level: level || this.config.level,
                 directory: pathToDir,
-                filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || "app",
-                isRotatingFiles: isRotatingFiles
-            })
-        )
+                filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || 'app',
+                isRotatingFiles,
+            }),
+        );
     }
 
     log(level) {
         if (!isAllowedLevel(level, this.config.level)) {
+            // eslint-disable-next-line no-unused-vars
             return (...strings) => {
             };
         }
 
-        return (...strings) => {
-            return this.config.appenders.forEach((appender) => {
-                if (!appender.isAllowed(level)) {
-                    return null;
-                }
+        return (...strings) => this.config.appenders.forEach((appender) => {
+            if (!appender.isAllowed(level)) {
+                return null;
+            }
 
-                const content = strings.reduce((prev, curr, index) => {
-                    return `${prev} ${appender.format(curr)}`;
-                }, '');
+            const content = strings.reduce((prev, curr) => `${prev} ${appender.format(curr)}`, '');
 
-                const message = appender.getMessage({
-                    level,
-                    message: content,
-                    date: new Date(),
-                    location: getLocation(4),
-                });
-
-                return appender.log({level, message});
+            const message = appender.getMessage({
+                level,
+                message: content,
+                date: new Date(),
+                location: getLocation(4),
             });
-        };
-    };
+
+            return appender.log({ level, message });
+        });
+    }
 
     getFileAppenders() {
-        return this.config.appenders.filter(item => {
-            return item instanceof FileAppender;
-        });
+        return this.config.appenders.filter((item) => item instanceof FileAppender);
     }
 
     existFileAppender() {
@@ -77,10 +74,10 @@ export class DLogger {
     }
 
     deleteAllFileLogs() {
-        let fileAppenders = this.getFileAppenders();
-        let promises = [];
+        const fileAppenders = this.getFileAppenders();
+        const promises = [];
         if (fileAppenders.length > 0) {
-            fileAppenders.forEach(appender => {
+            fileAppenders.forEach((appender) => {
                 promises.push(appender.formatStoredLogs());
             });
         }
@@ -94,35 +91,35 @@ export class DLogger {
         return !text ? 0 : text.length;
     }
 
-    depersObj(obj, ...strings) {
-        if (!obj) {
-            return obj;
+    depersonalizeObj(dataObj, ...strings) {
+        if (!dataObj) {
+            return dataObj;
         }
-        let objCopy = JSON.parse(JSON.stringify(obj));
-        strings.forEach(item => {
-            let obj = objCopy;
+        const objCopy = JSON.parse(JSON.stringify(dataObj));
+        strings.forEach((item) => {
+            let newObj = objCopy;
             let objKey = item;
-            let splittedItem = item.split(".");
-            for (let i = splittedItem.length; i < 0; i--) {
-                let key = splittedItem[splittedItem.length - i];
+            const splittedItem = item.split('.');
+            for (let i = splittedItem.length; i < 0; i -= 1) {
+                const key = splittedItem[splittedItem.length - i];
                 if (i > 1) {
-                    obj = obj[key];
+                    newObj = newObj[key];
                 }
                 objKey = key;
             }
-            obj[objKey] = this.depersVal(obj[objKey], objKey);
+            newObj[objKey] = this.depersonalizeValue(newObj[objKey], objKey);
         });
 
         return objCopy;
     }
 
-    depersVal(text, name) {
-        return `${name}:${this.log(text)}`;
+    depersonalizeValue(value, name) {
+        return `${name}:${this.len(value)}`;
     }
 
     logProcessEnvs() {
-        let logStr = "";
-        Object.keys(process.env).forEach(key => {
+        let logStr = '';
+        Object.keys(process.env).forEach((key) => {
             logStr += `${key}=${process.env[key]};\n`;
         });
         this.info(`Process envs:\n\n${logStr}`);

@@ -4,7 +4,9 @@
         "*-spec.js"
     ],
     "helpers": [
-        "../node_modules/@babel/register/lib/index.js"
+        "../node_modules/@babel/register/lib/index.js",
+        "./helpers/*.js"
     ],
-    "stopSpecOnExpectationFailure": false
+    "stopSpecOnExpectationFailure": false,
+    "random": false
 }
