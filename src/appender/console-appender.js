@@ -1,6 +1,6 @@
 import LogAppender from './log-appender.js';
 import { createTemplate, format, isError } from '../utils.js';
-import { LOG_LEVEL_COLOR } from '../constants.js';
+import { LOG_LEVEL2METHOD, LOG_LEVEL_COLOR } from '../constants.js';
 
 function defaultConfig() {
     return {
@@ -38,9 +38,11 @@ export default class ConsoleAppender extends LogAppender {
 
     __getConsoleMethod(level) {
         // eslint-disable-next-line no-console
-        const method = console[level];
-        if (method) {
-            return method;
+        if (level in LOG_LEVEL2METHOD) {
+            const method = LOG_LEVEL2METHOD[level];
+            if (method) {
+                return method;
+            }
         }
         // eslint-disable-next-line no-console
         return console.log;

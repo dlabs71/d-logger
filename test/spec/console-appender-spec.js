@@ -1,4 +1,5 @@
 import {ConsoleAppender} from "../../src/index.js";
+import {LOG_LEVEL} from "../../src/constants.js";
 
 describe("testing console appender", () => {
 
@@ -51,5 +52,61 @@ describe("testing console appender", () => {
         let resultNum = consoleAppender.format(val2resNum[0]);
         expect(resultNum).toEqual(jasmine.any(String));
         expect(resultNum).toBe(val2resNum[1]);
+    });
+
+    it("check getting log method by level", () => {
+        const ca = new ConsoleAppender({
+            level: DEFAULT_LEVEL,
+        });
+        expect(ca.__getConsoleMethod(LOG_LEVEL.emerg)).toBe(console.trace);
+        expect(ca.__getConsoleMethod(LOG_LEVEL.alert)).toBe(console.trace);
+        expect(ca.__getConsoleMethod(LOG_LEVEL.crit)).toBe(console.trace);
+        expect(ca.__getConsoleMethod(LOG_LEVEL.error)).toBe(console.error);
+        expect(ca.__getConsoleMethod(LOG_LEVEL.warn)).toBe(console.warn);
+        expect(ca.__getConsoleMethod(LOG_LEVEL.notice)).toBe(console.info);
+        expect(ca.__getConsoleMethod(LOG_LEVEL.info)).toBe(console.info);
+        expect(ca.__getConsoleMethod(LOG_LEVEL.debug)).toBe(console.debug);
+    });
+
+    it("check logging", () => {
+        const ca = new ConsoleAppender({
+            level: DEFAULT_LEVEL
+        });
+
+        const payload = {
+            message: "hello world",
+            level: LOG_LEVEL.emerg
+        };
+        ca.log = jasmine.createSpy("log");
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
+
+        payload.level = LOG_LEVEL.alert;
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
+
+        payload.level = LOG_LEVEL.crit;
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
+
+        payload.level = LOG_LEVEL.error;
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
+
+        payload.level = LOG_LEVEL.warn;
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
+
+        payload.level = LOG_LEVEL.notice;
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
+
+        payload.level = LOG_LEVEL.info;
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
+
+        payload.level = LOG_LEVEL.debug;
+        ca.log(payload);
+        expect(ca.log).toHaveBeenCalledWith(payload);
     });
 });

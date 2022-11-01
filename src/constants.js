@@ -9,6 +9,25 @@ export const LOG_LEVEL = {
     debug: 'debug',
 };
 
+export const LOG_LEVEL2METHOD = {
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.emerg]: console.trace,
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.alert]: console.trace,
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.crit]: console.trace,
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.error]: console.error,
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.warn]: console.warn,
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.notice]: console.info,
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.info]: console.info,
+    // eslint-disable-next-line no-console
+    [LOG_LEVEL.debug]: console.debug,
+};
+
 export const LOG_LEVEL_COLOR = {
     [LOG_LEVEL.emerg]: 'red',
     [LOG_LEVEL.alert]: 'orange',

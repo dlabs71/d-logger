@@ -22,7 +22,7 @@ export function formatLocation(location, abbreviated = false) {
     if (!abbreviated) {
         return location;
     }
-    let newLocation = location.replaceAll(/[()]/g, '').split('///./').pop();
+    let newLocation = location.replaceAll(/[()]/g, '').split('///').pop();
     if (newLocation.includes('!./')) {
         newLocation = newLocation.split('!./').pop();
     }
@@ -50,5 +50,5 @@ export function isAllowedLevel(level, baseLevel) {
 }
 
 export function isError(e) {
-    return e && e.stack && e.message;
+    return !!(e && e.stack && e.message);
 }
