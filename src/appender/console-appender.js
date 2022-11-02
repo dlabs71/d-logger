@@ -1,5 +1,5 @@
 import LogAppender from './log-appender.js';
-import { createTemplate, format, isError } from '../utils.js';
+import { createTemplate, format, mergeObjects } from '../utils.js';
 import { LOG_LEVEL2METHOD, LOG_LEVEL_COLOR } from '../constants.js';
 
 function defaultConfig() {
@@ -13,27 +13,14 @@ function defaultConfig() {
             format.newLine(),
             format.message(),
         ),
+        stepInStack: 5,
     };
 }
 
 export default class ConsoleAppender extends LogAppender {
-    constructor(unsafeConfig) {
-        const config = { ...defaultConfig(), ...unsafeConfig };
-        super(config);
-    }
-
-    format(value) {
-        if (typeof value === 'function') {
-            value = value();
-        }
-        if (isError(value)) {
-            return value.toString();
-        }
-        if (typeof value === 'object' || Array.isArray(value)) {
-            return JSON.stringify(value);
-        }
-
-        return String(value);
+    constructor(config) {
+        const mergedConfig = mergeObjects(defaultConfig(), config);
+        super(mergedConfig);
     }
 
     __getConsoleMethod(level) {
@@ -48,15 +35,19 @@ export default class ConsoleAppender extends LogAppender {
         return console.log;
     }
 
-    log({ message, level }) {
-        const msg = message;
+    log(strings, level = null, stepInStack = null) {
+        const message = this.creatingMessage(strings, level, stepInStack);
+        if (!message) {
+            return null;
+        }
+
         const logToConsole = this.__getConsoleMethod(level);
 
         if (this.config.colorize) {
-            logToConsole(`%c${msg}\n`, `color: ${LOG_LEVEL_COLOR[level]}`);
+            logToConsole(`%c${message}\n`, `color: ${LOG_LEVEL_COLOR[level]}`);
         } else {
-            logToConsole(`${msg}\n`);
+            logToConsole(`${message}\n`);
         }
-        return msg;
+        return message;
     }
 }

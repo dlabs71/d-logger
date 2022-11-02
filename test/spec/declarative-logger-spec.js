@@ -1,6 +1,6 @@
 import {$log} from '../../src/index.js';
 
-describe("$log using console appender", () => {
+describe("declarative logger", () => {
     const str = 'd-logger it`s work';
 
     it("level error", () => {

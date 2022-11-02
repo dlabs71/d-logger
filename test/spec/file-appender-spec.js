@@ -114,15 +114,12 @@ describe("testing file appender", () => {
             filePrefix: LOG_PREFIX
         });
 
-        let data = {
-            message: "new log message",
-            level: "error"
-        };
-        fileAppender.log(data);
+        let logMessage = "new log message";
+        fileAppender.log([logMessage], "error");
 
         setTimeout(() => {
             let fileData = fs.readFileSync(fileAppender.config.path, "utf-8");
-            expect(fileData).toBe(`${data.message}\n`);
+            expect(fileData).toMatch(`${logMessage}`);
             done();
         });
     });

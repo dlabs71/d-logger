@@ -20,7 +20,14 @@
         "class-methods-use-this": 0,
         "no-param-reassign": 0,
         "no-underscore-dangle": 0,
-        "import/extensions": 0
+        "import/extensions": 0,
+        "no-promise-executor-return": 0,
+        "max-len": [
+            "error",
+            {
+                "code": 121
+            }
+        ]
     },
     "ignorePatterns": [
         "test",

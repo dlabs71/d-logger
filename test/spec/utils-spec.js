@@ -1,5 +1,17 @@
-import {formatLocation, getLocation, isAllowedLevel, isError} from "../../src/utils.js";
+import {
+    createTemplate,
+    depersonalizeObj,
+    depersonalizeValue,
+    format,
+    formatLocation,
+    getLocation,
+    isAllowedLevel,
+    isError,
+    len,
+    mergeObjects
+} from "../../src/utils.js";
 import {LOG_LEVEL} from "../../src/constants.js";
+import moment from "moment";
 
 describe("testing utils", () => {
 
@@ -29,5 +41,67 @@ describe("testing utils", () => {
     it("test isAllowedLevel", () => {
         expect(isAllowedLevel(LOG_LEVEL.error, LOG_LEVEL.info)).toBeTrue();
         expect(isAllowedLevel(LOG_LEVEL.info, LOG_LEVEL.error)).toBeFalse();
+    });
+
+    it("test createTemplate", () => {
+        let template = createTemplate(
+            format.level(),
+            format.text(' - '),
+            format.date('DD.MM.YYYY HH:mm:ss'),
+            format.text(' - '),
+            format.location(true),
+            format.newLine(),
+            format.message(),
+            format.newLine(),
+        );
+
+        let location = getLocation(1);
+        let info = template({
+            level: "debug",
+            message: "info",
+            date: moment("02.11.2022 12:22:29", "DD.MM.YYYY HH:mm:ss"),
+            location: location
+        });
+        console.log(info);
+        expect(info).toMatch(/^DEBUG - 02\.11\.2022 12:22:29 - /);
+    });
+
+    it("test len", () => {
+        let string = "qwerty$4";
+        expect(len(string)).toBe(8);
+        expect(len(null)).toBe(null);
+        expect(len(undefined)).toBe(undefined);
+    });
+
+    it("test depersonalizeValue", () => {
+        expect(depersonalizeValue("qwerty$4", "password")).toBe("password:8");
+        expect(depersonalizeValue(null, "password")).toBe("password:null");
+        expect(depersonalizeValue(undefined, "password")).toBe("password:undefined");
+    });
+
+    it("test depersonalizeObj", () => {
+        let dataObj = {
+            login: "daivanov",
+            password: "qwerty$4",
+            secretKey: "12345678"
+        };
+        let result = depersonalizeObj(dataObj, "password", "secretKey");
+        expect(result.password).toBe("password:8");
+        expect(result.secretKey).toBe("secretKey:8");
+    });
+
+    it("test mergeObjects", () => {
+        let dataObj1 = {
+            name: "name",
+            password: "password"
+        };
+        let dataObj2 = {
+            password: "password123",
+            parameter1: "parameter1"
+        };
+        let result = mergeObjects(dataObj1, dataObj2);
+        expect(result.name).toBe("name");
+        expect(result.password).toBe("password123");
+        expect(result.parameter1).toBe("parameter1");
     });
 });

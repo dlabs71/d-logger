@@ -1,11 +1,17 @@
 import ConsoleAppender from './appender/console-appender.js';
-import { getLocation, isAllowedLevel } from './utils.js';
+import {
+    depersonalizeObj, depersonalizeValue, isAllowedLevel, len, mergeObjects,
+} from './utils.js';
 import FileAppender from './appender/file-appender.js';
+import { LOG_LEVEL } from './constants.js';
 
 function defaultConfig() {
     return {
         appenders: [],
-        level: process.argv.includes('--debug-mode') ? 'debug' : process.env.VUE_APP_LOG_LEVEL || 'debug',
+        level: process.argv.includes('--debug-mode') ? 'debug' : process.env.D_LOGGER_LOG_LEVEL
+            || process.env.VUE_APP_D_LOGGER_LOG_LEVEL
+            || 'debug',
+        template: null,
     };
 }
 
@@ -13,56 +19,68 @@ export class DLogger {
     config = null;
 
     constructor(config = {}) {
-        this.configure(!config ? {} : config);
+        this.configure(config || {});
     }
 
     configure(config) {
-        this.config = { ...defaultConfig(), ...config };
+        this.config = mergeObjects(defaultConfig(), config);
         this.config.appenders.push(new ConsoleAppender({ level: this.config.level }));
-        this.emerg = this.log('emerg');
-        this.alert = this.log('alert');
-        this.crit = this.log('crit');
-        this.error = this.log('error');
-        this.warning = this.log('warning');
-        this.notice = this.log('notice');
-        this.info = this.log('info');
-        this.debug = this.log('debug');
+        this.defineLogMethods();
     }
 
-    addFileAppender(pathToDir, isRotatingFiles = false, filePrefix = null, level = null) {
+    defineLogMethods() {
+        Object.keys(LOG_LEVEL).forEach((item) => {
+            this[item] = this.log(item);
+        });
+    }
+
+    addFileAppender(
+        pathToDir,
+        isRotatingFiles = false,
+        filePrefix = null,
+        level = null,
+        template = null,
+    ) {
         this.config.appenders.push(
             new FileAppender({
                 level: level || this.config.level,
                 directory: pathToDir,
                 filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || 'app',
+                template: template || this.config.template,
                 isRotatingFiles,
             }),
         );
     }
 
+    addConsoleAppender(level = null, colorize = true, template = null, stepInStack = 5) {
+        this.config.appenders.push(
+            new ConsoleAppender({
+                level: level || this.config.level,
+                colorize,
+                template: template || this.config.template,
+                stepInStack,
+            }),
+        );
+    }
+
+    addCustomAppender(appender) {
+        return this.config.appenders.push(appender);
+    }
+
+    clearAppenders() {
+        this.config.appenders = [];
+    }
+
     log(level) {
         if (!isAllowedLevel(level, this.config.level)) {
-            // eslint-disable-next-line no-unused-vars
-            return (...strings) => {
-            };
+            return (...strings) => strings;
         }
 
-        return (...strings) => this.config.appenders.forEach((appender) => {
-            if (!appender.isAllowed(level)) {
-                return null;
-            }
+        if (!this.config.appenders || this.config.appenders.length === 0) {
+            throw new Error('log list appenders is empty');
+        }
 
-            const content = strings.reduce((prev, curr) => `${prev} ${appender.format(curr)}`, '');
-
-            const message = appender.getMessage({
-                level,
-                message: content,
-                date: new Date(),
-                location: getLocation(4),
-            });
-
-            return appender.log({ level, message });
-        });
+        return (...strings) => this.config.appenders.forEach((appender) => appender.log(strings, level));
     }
 
     getFileAppenders() {
@@ -81,40 +99,10 @@ export class DLogger {
                 promises.push(appender.formatStoredLogs());
             });
         }
+        if (promises.length === 0) {
+            return new Promise((resolve) => resolve());
+        }
         return Promise.all(promises);
-    }
-
-    len(text) {
-        if (text === null || text === undefined) {
-            return text;
-        }
-        return !text ? 0 : text.length;
-    }
-
-    depersonalizeObj(dataObj, ...strings) {
-        if (!dataObj) {
-            return dataObj;
-        }
-        const objCopy = JSON.parse(JSON.stringify(dataObj));
-        strings.forEach((item) => {
-            let newObj = objCopy;
-            let objKey = item;
-            const splittedItem = item.split('.');
-            for (let i = splittedItem.length; i < 0; i -= 1) {
-                const key = splittedItem[splittedItem.length - i];
-                if (i > 1) {
-                    newObj = newObj[key];
-                }
-                objKey = key;
-            }
-            newObj[objKey] = this.depersonalizeValue(newObj[objKey], objKey);
-        });
-
-        return objCopy;
-    }
-
-    depersonalizeValue(value, name) {
-        return `${name}:${this.len(value)}`;
     }
 
     logProcessEnvs() {
@@ -123,6 +111,18 @@ export class DLogger {
             logStr += `${key}=${process.env[key]};\n`;
         });
         this.info(`Process envs:\n\n${logStr}`);
+    }
+
+    depersonalizeObj() {
+        return depersonalizeObj();
+    }
+
+    depersonalizeValue() {
+        return depersonalizeValue();
+    }
+
+    len() {
+        return len();
     }
 }
 

@@ -52,3 +52,46 @@ export function isAllowedLevel(level, baseLevel) {
 export function isError(e) {
     return !!(e && e.stack && e.message);
 }
+
+export function len(text) {
+    if (text === null || text === undefined) {
+        return text;
+    }
+    return !text ? 0 : text.length;
+}
+
+export function depersonalizeValue(value, name) {
+    return `${name}:${len(value)}`;
+}
+
+export function depersonalizeObj(dataObj, ...strings) {
+    if (!dataObj) {
+        return dataObj;
+    }
+    const objCopy = JSON.parse(JSON.stringify(dataObj));
+    strings.forEach((item) => {
+        let newObj = objCopy;
+        let objKey = item;
+        const splittedItem = item.split('.');
+        for (let i = splittedItem.length; i < 0; i -= 1) {
+            const key = splittedItem[splittedItem.length - i];
+            if (i > 1) {
+                newObj = newObj[key];
+            }
+            objKey = key;
+        }
+        newObj[objKey] = depersonalizeValue(newObj[objKey], objKey);
+    });
+
+    return objCopy;
+}
+
+export function mergeObjects(obj1, obj2) {
+    const mergedObj = obj1;
+    Object.entries(obj2).forEach(([key, value]) => {
+        if (value) {
+            mergedObj[key] = value;
+        }
+    });
+    return mergedObj;
+}

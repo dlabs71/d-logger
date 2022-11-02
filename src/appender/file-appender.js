@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { join } from 'path';
 import moment from 'moment';
-import { createTemplate, format, isError } from '../utils.js';
+import { createTemplate, format, mergeObjects } from '../utils.js';
 import LogAppender from './log-appender.js';
 
 function defaultConfig() {
@@ -27,12 +27,13 @@ function defaultConfig() {
 export default class FileAppender extends LogAppender {
     __fileStream = null;
 
-    constructor(unsafeConfig) {
-        const config = { ...defaultConfig(), ...unsafeConfig };
-        super(config);
+    constructor(config) {
+        const mergedConfig = mergeObjects(defaultConfig(), config);
+        super(mergedConfig);
 
         this.config.path = join(config.directory, `${config.filePrefix}.${moment().format('YYYY-MM-DD')}.log`);
-        this.initCurrentLogFile();
+        this.initCurrentLogFile().finally(() => {
+        });
     }
 
     initCurrentLogFile() {
@@ -80,22 +81,12 @@ export default class FileAppender extends LogAppender {
         });
     }
 
-    format(value) {
-        if (typeof value === 'function') {
-            value = value();
-        }
-        if (isError(value)) {
-            return value.toString();
-        }
-        if (typeof value === 'object' || Array.isArray(value)) {
-            return JSON.stringify(value);
+    log(strings, level = null, stepInStack = null) {
+        const message = this.creatingMessage(strings, level, stepInStack);
+        if (!message) {
+            return null;
         }
 
-        return String(value);
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    log({ message, level }) {
         this.__fileStream.write(`${message}\n`);
         return message;
     }
