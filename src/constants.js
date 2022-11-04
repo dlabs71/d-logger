@@ -1,3 +1,7 @@
+/**
+ * Log level names
+ * @constant
+ */
 export const LOG_LEVEL = {
     emerg: 'emerg',
     alert: 'alert',
@@ -10,6 +14,10 @@ export const LOG_LEVEL = {
     debug: 'debug',
 };
 
+/**
+ * Mapping log level name to console method
+ * @constant
+ */
 export const LOG_LEVEL2METHOD = {
     // eslint-disable-next-line no-console
     [LOG_LEVEL.emerg]: console.trace,
@@ -31,6 +39,9 @@ export const LOG_LEVEL2METHOD = {
     [LOG_LEVEL.debug]: console.debug,
 };
 
+/**
+ * Mapping log level name to them color
+ */
 export const LOG_LEVEL_COLOR = {
     [LOG_LEVEL.emerg]: 'red',
     [LOG_LEVEL.alert]: 'orange',
@@ -43,6 +54,9 @@ export const LOG_LEVEL_COLOR = {
     [LOG_LEVEL.debug]: 'rainbow',
 };
 
+/**
+ * Mapping log level name to them priority
+ */
 export const LOG_LEVEL_NUMBER = {
     [LOG_LEVEL.emerg]: 0,
     [LOG_LEVEL.alert]: 1,

@@ -4,6 +4,16 @@ import moment from 'moment';
 import { createTemplate, format, mergeObjects } from '../utils.js';
 import LogAppender from './log-appender.js';
 
+/**
+ * Default configuration for FileAppender {@see FileAppender}
+ * level - log level threshold {@see LOG_LEVEL}
+ * directory - log directory
+ * filePrefix - file prefix for log files.
+ * numberOfFiles - maximum count of log files. Using with isRotatingFiles = true
+ * isRotatingFiles - use rotating log files. Delete old files
+ * template - template for log row
+ * stepInStack - number row in stack trace {@see getLocation}
+ */
 function defaultConfig() {
     return {
         level: 'info',
@@ -21,12 +31,20 @@ function defaultConfig() {
             format.message(),
             format.newLine(),
         ),
+        stepInStack: 5,
     };
 }
 
+/**
+ * Class for logging into files
+ * @extends LogAppender
+ */
 export default class FileAppender extends LogAppender {
     __fileStream = null;
 
+    /**
+     * @param {object} config - {@see defaultConfig}
+     */
     constructor(config) {
         const mergedConfig = mergeObjects(defaultConfig(), config);
         super(mergedConfig);
@@ -36,6 +54,10 @@ export default class FileAppender extends LogAppender {
         });
     }
 
+    /**
+     * Initialize fileStream for logging. Launching the log file rotation mechanism, if it is enabled
+     * @returns {Promise<unknown>}
+     */
     initCurrentLogFile() {
         return new Promise((resolve) => {
             this.__fileStream = fs.createWriteStream(this.config.path, { flags: 'a' });
@@ -49,6 +71,11 @@ export default class FileAppender extends LogAppender {
         });
     }
 
+    /**
+     * Log files rotating mechanism.
+     * Deleting old log files. Will be saved only {config.numberOfFiles} count log files.
+     * @returns {Promise<unknown>}
+     */
     rotateLogFiles() {
         return new Promise((resolve, reject) => {
             fs.readdir(this.config.directory, (readDirErr, files) => {
@@ -81,6 +108,9 @@ export default class FileAppender extends LogAppender {
         });
     }
 
+    /**
+     * {@see LogAppender.log}
+     */
     log(strings, level = null, stepInStack = null) {
         const message = this.creatingMessage(strings, level, stepInStack);
         if (!message) {
@@ -91,6 +121,10 @@ export default class FileAppender extends LogAppender {
         return message;
     }
 
+    /**
+     * Deleting all log files and then reinitializing fileAppender
+     * @returns {Promise}
+     */
     formatStoredLogs() {
         return new Promise((resolve, reject) => {
             fs.readdir(this.config.directory, (err, files) => {
