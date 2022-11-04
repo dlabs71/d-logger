@@ -46,14 +46,17 @@ export class DLogger {
      */
     configure(config) {
         this.config = mergeObjects(defaultConfig(), config);
-        this.config.appenders.push(new ConsoleAppender({ level: this.config.level }));
-        this.defineLogMethods();
+        if (this.config.appenders.length === 0) {
+            this.config.appenders.push(new ConsoleAppender({ level: this.config.level }));
+        }
+        this.__defineLogMethods();
     }
 
     /**
      * Creating logging methods that correspond to logging levels {@see LOG_LEVEL}
+     * @private
      */
-    defineLogMethods() {
+    __defineLogMethods() {
         Object.keys(LOG_LEVEL).forEach((item) => {
             this[item] = this.__log(item);
         });
@@ -66,6 +69,7 @@ export class DLogger {
      * @param filePrefix - file prefix for log files.
      * @param level - log level threshold {@see LOG_LEVEL}
      * @param template - template for log row
+     * @param stepInStack - number row in stack trace {@see getLocation}
      */
     addFileAppender(
         pathToDir,
@@ -73,6 +77,7 @@ export class DLogger {
         filePrefix = null,
         level = null,
         template = null,
+        stepInStack = 5,
     ) {
         this.config.appenders.push(
             new FileAppender({
@@ -81,6 +86,7 @@ export class DLogger {
                 filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || 'app',
                 template: template || this.config.template,
                 isRotatingFiles,
+                stepInStack,
             }),
         );
     }
