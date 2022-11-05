@@ -1,12 +1,12 @@
 {
     "name": "@dlabs71/d-logger",
     "private": false,
-    "version": "1.0.1",
+    "version": "1.0.2",
     "author": {
         "name": "Danila Ivanov",
         "email": "danila.a.ivanov@d-labs.ru"
     },
-    "description": "Logger",
+    "description": "Logger for JS applications",
     "license": "MIT",
     "scripts": {
         "build": "npx rollup -c rollup.config.mjs",
