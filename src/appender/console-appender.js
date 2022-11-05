@@ -1,5 +1,5 @@
 import LogAppender from './log-appender.js';
-import { createTemplate, format, mergeObjects } from '../utils.js';
+import { createTemplate, templateFns, mergeObjects } from '../utils.js';
 import { LOG_LEVEL2METHOD, LOG_LEVEL_COLOR } from '../constants.js';
 
 /**
@@ -14,11 +14,11 @@ function defaultConfig() {
         level: 'info',
         colorize: true,
         template: createTemplate(
-            format.levelDate('DD.MM.YYYY HH:mm:ss'),
-            format.newLine(),
-            format.location(),
-            format.newLine(),
-            format.message(),
+            templateFns.levelDate('DD.MM.YYYY HH:mm:ss'),
+            templateFns.newLine(),
+            templateFns.location(),
+            templateFns.newLine(),
+            templateFns.message(),
         ),
         stepInStack: 5,
     };

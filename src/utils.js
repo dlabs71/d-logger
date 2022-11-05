@@ -51,7 +51,7 @@ export function formatLocation(location, abbreviated = false) {
  * @property levelDate - function for formatting level and date jointly
  * @property newLine - function creating transition to a new line
  */
-export const format = {
+export const templateFns = {
     date: (dateFormat) => ({ date }) => moment(date).format(dateFormat),
     location: (abbreviated = false) => ({ location }) => formatLocation(location, abbreviated),
     message: () => ({ message }) => message,
@@ -62,8 +62,8 @@ export const format = {
 };
 
 /**
- * Creator common template from formatting functions {@link format}
- * @param {functions[]} fns - formatting functions {@link format}
+ * Creator common template from formatting functions {@link templateFns}
+ * @param {functions[]} fns - formatting functions {@link templateFns}
  */
 export function createTemplate(...fns) {
     return (info) => fns.reduce((prev, curr) => `${prev}${curr(info)}`, '');

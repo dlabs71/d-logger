@@ -2,13 +2,13 @@ import {
     createTemplate,
     depersonalizeObj,
     depersonalizeValue,
-    format,
     formatLocation,
     getLocation,
     isAllowedLevel,
     isError,
     len,
-    mergeObjects
+    mergeObjects,
+    templateFns
 } from "../../src/utils.js";
 import {LOG_LEVEL} from "../../src/constants.js";
 import moment from "moment";
@@ -45,14 +45,14 @@ describe("testing utils", () => {
 
     it("test createTemplate", () => {
         let template = createTemplate(
-            format.level(),
-            format.text(' - '),
-            format.date('DD.MM.YYYY HH:mm:ss'),
-            format.text(' - '),
-            format.location(true),
-            format.newLine(),
-            format.message(),
-            format.newLine(),
+            templateFns.level(),
+            templateFns.text(' - '),
+            templateFns.date('DD.MM.YYYY HH:mm:ss'),
+            templateFns.text(' - '),
+            templateFns.location(true),
+            templateFns.newLine(),
+            templateFns.message(),
+            templateFns.newLine(),
         );
 
         let location = getLocation(1);

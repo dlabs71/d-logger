@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { join } from 'path';
 import moment from 'moment';
-import { createTemplate, format, mergeObjects } from '../utils.js';
+import { createTemplate, templateFns, mergeObjects } from '../utils.js';
 import LogAppender from './log-appender.js';
 
 /**
@@ -22,14 +22,14 @@ function defaultConfig() {
         numberOfFiles: process.env.VUE_APP_LOG_FILE_COUNT || 5,
         isRotatingFiles: false,
         template: createTemplate(
-            format.level(),
-            format.text(' - '),
-            format.date('DD.MM.YYYY HH:mm:ss'),
-            format.text(' - '),
-            format.location(true),
-            format.newLine(),
-            format.message(),
-            format.newLine(),
+            templateFns.level(),
+            templateFns.text(' - '),
+            templateFns.date('DD.MM.YYYY HH:mm:ss'),
+            templateFns.text(' - '),
+            templateFns.location(true),
+            templateFns.newLine(),
+            templateFns.message(),
+            templateFns.newLine(),
         ),
         stepInStack: 5,
     };

@@ -13,8 +13,8 @@
         "lint": "npx eslint --fix ./"
     },
     "dependencies": {
-        "moment": "=2.29.4",
-        "node-emojify": "=0.0.15"
+        "moment": "^2.29.4",
+        "node-emojify": "^0.0.15"
     },
     "devDependencies": {
         "@babel/core": "^7.19.6",
@@ -51,5 +51,8 @@
     "bugs": {
         "url": "https://github.com/dlabs71/d-logger/issues"
     },
-    "homepage": "https://github.com/dlabs71/d-logger#readme"
+    "homepage": "https://github.com/dlabs71/d-logger#readme",
+    "engines": {
+        "node": ">=16.17.0"
+    }
 }
