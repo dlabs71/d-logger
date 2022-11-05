@@ -8,7 +8,7 @@
 # Установка NPM
 
 ```sh
-npm i @dlabs/d-logger
+npm i @dlabs71/d-logger
 ```
 
 # Использование
@@ -23,7 +23,7 @@ npm i @dlabs/d-logger
 **`main.js`**
 
 ```js
-import DLoggerPlugin from 'd-logger';
+import DLoggerPlugin from '@dlabs71/d-logger';
 
 Vue.use(DLoggerPlugin);
 // or
@@ -71,7 +71,7 @@ export default {
 и основного аппендера логирования ([Логгер](#2.-Логгер)).
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 function exampleFunc(param1, param2) {
     $log.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
@@ -82,7 +82,7 @@ function exampleFunc(param1, param2) {
 документации [Метод configure](#2.2.1-Метод-configure).
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.configure({
     level: "error"
@@ -131,7 +131,7 @@ function exampleFunc(param1, param2) {
 **`example.js`**
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 function exampleFunc(param1, param2) {
     $log.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
@@ -158,7 +158,7 @@ function exampleFunc(param1, param2) {
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.configure({
     level: "error"
@@ -172,7 +172,7 @@ $log.configure({
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.clearAppenders();
 ```
@@ -194,7 +194,7 @@ $log.clearAppenders();
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.addFileAppender('/var/log/app', true);
 ```
@@ -204,7 +204,7 @@ $log.addFileAppender('/var/log/app', true);
 Метод для получения списка всех **`FileAppender-ов`**.
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.addFileAppender('/var/log/app', true);
 let fileAppenders = $log.getFileAppenders();
@@ -216,7 +216,7 @@ let fileAppenders = $log.getFileAppenders();
 Метод для проверки существования **`FileAppender-ов`** в списке аппендеров
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.addFileAppender('/var/log/app', true);
 let exist = $log.existFileAppender();
@@ -228,7 +228,7 @@ let exist = $log.existFileAppender();
 Метод для удаления всех лог файлов
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.addFileAppender('/var/log/app', true);
 $log.deleteAllFileLogs();
@@ -248,7 +248,7 @@ $log.deleteAllFileLogs();
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.addConsoleAppender("debug", true);
 ```
@@ -260,7 +260,7 @@ $log.addConsoleAppender("debug", true);
 Пример использования:
 
 ```js
-import {$log, LogAppender} from 'd-logger';
+import {$log, LogAppender} from '@dlabs71/d-logger';
 
 class CustomAppender extends LogAppender {
 
@@ -287,7 +287,7 @@ $log.addCustomAppender(new CustomAppender());
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.logProcessEnvs();
 
@@ -311,7 +311,7 @@ $log.logProcessEnvs();
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.dprsValue("qwerty$4", "password");
 // return "password:8"
@@ -330,7 +330,7 @@ $log.dprsValue(undefined, "password");
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.dprsValue({
     login: "daivanov",
@@ -351,7 +351,7 @@ $log.dprsValue({
 Пример использования:
 
 ```js
-import {$log} from 'd-logger';
+import {$log} from '@dlabs71/d-logger';
 
 $log.len("qwerty$4");
 // return 8
@@ -378,7 +378,7 @@ $log.len(undefined);
 Пример использования:
 
 ```js
-import {$log, templateFns, createTemplate} from 'd-logger';
+import {$log, templateFns, createTemplate} from '@dlabs71/d-logger';
 
 let template = createTemplate(
         // выводим уровень логирования
@@ -411,9 +411,9 @@ $log.configure({
 });
 ```
 
-[npm-image]: https://img.shields.io/npm/v/vue-logger-plugin.svg
+[npm-image]: https://img.shields.io/npm/v/@dlabs71/d-logger
 
-[npm-url]: v1.0.0
+[npm-url]: https://www.npmjs.com/package/@dlabs71/d-logger
 
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 
