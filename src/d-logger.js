@@ -1,7 +1,9 @@
 import ConsoleAppender from './appender/console-appender.js';
-import {depersonalizeObj, depersonalizeValue, isAllowedLevel, len, mergeObjects,} from './utils.js';
+import {
+    depersonalizeObj, depersonalizeValue, isAllowedLevel, len, mergeObjects,
+} from './utils.js';
 import FileAppender from './appender/file-appender.js';
-import {LOG_LEVEL} from './constants.js';
+import { LOG_LEVEL } from './constants.js';
 
 /**
  * Default config for DLogger {@see DLogger}
@@ -21,7 +23,7 @@ function defaultConfig() {
             || process.env.VUE_APP_D_LOGGER_LOG_LEVEL
             || 'debug',
         template: null,
-        stepInStack: 6
+        stepInStack: 6,
     };
 }
 
@@ -85,7 +87,7 @@ export class DLogger {
                 directory: pathToDir,
                 filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || 'app',
                 template: template || this.config.template,
-                isRotatingFiles: isRotatingFiles,
+                isRotatingFiles,
                 stepInStack: stepInStack || this.config.stepInStack,
             }),
         );
@@ -102,7 +104,7 @@ export class DLogger {
         this.config.appenders.push(
             new ConsoleAppender({
                 level: level || this.config.level,
-                colorize: colorize,
+                colorize,
                 template: template || this.config.template,
                 stepInStack: stepInStack || this.config.stepInStack,
             }),

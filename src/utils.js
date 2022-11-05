@@ -16,7 +16,16 @@ export function getLocation(stepInStack = 1) {
                 .split('\n')
                 .map((m) => m.trim())
                 .filter((m) => m.startsWith('at'));
-            return String(stackLocations[stepInStack]).slice(3);
+            if (stackLocations.length <= stepInStack) {
+                return 'parameter stepInStack is not valid. '
+                    + `stepInStack = ${stepInStack} `
+                    + `but stack length = ${stackLocations.length}`;
+            }
+            const location = String(stackLocations[stepInStack]);
+            if (location.includes('(')) {
+                return location.slice(location.indexOf('('));
+            }
+            return location.slice(3);
         } catch (err) {
             return '';
         }
