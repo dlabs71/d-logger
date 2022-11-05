@@ -9,6 +9,14 @@ describe("testing d-logger", () => {
         createLogDir(LOG_DIR);
     });
 
+    it("test stepInStack", () => {
+        let logger = new DLogger({
+            level: "debug",
+            stepInStack: 5
+        });
+        logger.debug("test message");
+    });
+
     it("test __defineLogMethods", () => {
         let logger = new DLogger();
         Object.keys(LOG_LEVEL).forEach(item => {

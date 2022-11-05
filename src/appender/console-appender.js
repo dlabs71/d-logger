@@ -20,7 +20,7 @@ function defaultConfig() {
             templateFns.newLine(),
             templateFns.message(),
         ),
-        stepInStack: 5,
+        stepInStack: 6,
     };
 }
 

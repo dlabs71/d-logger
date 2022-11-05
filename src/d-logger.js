@@ -1,9 +1,7 @@
 import ConsoleAppender from './appender/console-appender.js';
-import {
-    depersonalizeObj, depersonalizeValue, isAllowedLevel, len, mergeObjects,
-} from './utils.js';
+import {depersonalizeObj, depersonalizeValue, isAllowedLevel, len, mergeObjects,} from './utils.js';
 import FileAppender from './appender/file-appender.js';
-import { LOG_LEVEL } from './constants.js';
+import {LOG_LEVEL} from './constants.js';
 
 /**
  * Default config for DLogger {@see DLogger}
@@ -14,6 +12,7 @@ import { LOG_LEVEL } from './constants.js';
  *              - define process env: process.env.VUE_APP_D_LOGGER_LOG_LEVEL
  *              - define process arg: --debug-mode (process.argv.includes('--debug-mode'))
  * template - default function for templating log row
+ * stepInStack - number row in stack trace {@see getLocation}
  */
 function defaultConfig() {
     return {
@@ -22,6 +21,7 @@ function defaultConfig() {
             || process.env.VUE_APP_D_LOGGER_LOG_LEVEL
             || 'debug',
         template: null,
+        stepInStack: 6
     };
 }
 
@@ -47,7 +47,7 @@ export class DLogger {
     configure(config) {
         this.config = mergeObjects(defaultConfig(), config);
         if (this.config.appenders.length === 0) {
-            this.config.appenders.push(new ConsoleAppender({ level: this.config.level }));
+            this.addConsoleAppender(this.config.level, true, null, this.config.stepInStack);
         }
         this.__defineLogMethods();
     }
@@ -77,7 +77,7 @@ export class DLogger {
         filePrefix = null,
         level = null,
         template = null,
-        stepInStack = 5,
+        stepInStack = null,
     ) {
         this.config.appenders.push(
             new FileAppender({
@@ -85,8 +85,8 @@ export class DLogger {
                 directory: pathToDir,
                 filePrefix: filePrefix || process.env.VUE_APP_LOG_FILE_PREFIX || 'app',
                 template: template || this.config.template,
-                isRotatingFiles,
-                stepInStack,
+                isRotatingFiles: isRotatingFiles,
+                stepInStack: stepInStack || this.config.stepInStack,
             }),
         );
     }
@@ -98,13 +98,13 @@ export class DLogger {
      * @param template - template for log row
      * @param stepInStack - number row in stack trace {@see getLocation}
      */
-    addConsoleAppender(level = null, colorize = true, template = null, stepInStack = 5) {
+    addConsoleAppender(level = null, colorize = true, template = null, stepInStack = null) {
         this.config.appenders.push(
             new ConsoleAppender({
                 level: level || this.config.level,
-                colorize,
+                colorize: colorize,
                 template: template || this.config.template,
-                stepInStack,
+                stepInStack: stepInStack || this.config.stepInStack,
             }),
         );
     }
