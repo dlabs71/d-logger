@@ -1,6 +1,7 @@
 {
-    "name": "d-logger",
-    "version": "1.0.0",
+    "name": "@dlabs71/d-logger",
+    "private": false,
+    "version": "1.0.1",
     "author": {
         "name": "Danila Ivanov",
         "email": "danila.a.ivanov@d-labs.ru"
@@ -54,5 +55,9 @@
     "homepage": "https://github.com/dlabs71/d-logger#readme",
     "engines": {
         "node": ">=16.17.0"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
     }
 }
