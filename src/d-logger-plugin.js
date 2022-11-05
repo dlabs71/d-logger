@@ -15,6 +15,7 @@ export default {
      *              - define process env: process.env.VUE_APP_D_LOGGER_LOG_LEVEL
      *              - define process arg: --debug-mode (process.argv.includes('--debug-mode'))
      * template - default function for templating log row
+     * stepInStack - number row in stack trace {@see getLocation}
      */
     install(Vue, opt) {
         if (!!opt && !!opt.logConfig) {

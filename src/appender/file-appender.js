@@ -31,7 +31,7 @@ function defaultConfig() {
             templateFns.message(),
             templateFns.newLine(),
         ),
-        stepInStack: 5,
+        stepInStack: 6,
     };
 }
 
