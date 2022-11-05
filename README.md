@@ -1,4 +1,4 @@
-# d-logger
+# D-logger
 
 Библиотека для ведения журнала логирования JS/Vue приложений.
 
@@ -8,7 +8,7 @@
 # Установка NPM
 
 ```sh
-npm i d-logger
+npm i @dlabs/d-logger
 ```
 
 # Использование

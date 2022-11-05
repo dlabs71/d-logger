@@ -1,5 +1,5 @@
 {
-    "name": "d-logger",
+    "name": "@dlabs/d-logger",
     "version": "1.0.0",
     "author": {
         "name": "Danila Ivanov",
