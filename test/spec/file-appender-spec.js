@@ -6,7 +6,7 @@ const LOG_DIR = "test/spec/log-file-appender-spec";
 const LOG_PREFIX = "test";
 const LEVEL = "debug";
 
-describe("testing file appender", () => {
+xdescribe("testing file appender", () => {
     beforeEach(() => {
         createLogDir(LOG_DIR);
     });

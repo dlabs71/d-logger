@@ -1,8 +1,14 @@
-import fs from 'fs';
-import { join } from 'path';
 import moment from 'moment';
-import { createTemplate, templateFns, mergeObjects } from '../utils.js';
+import { createTemplate, mergeObjects, templateFns } from '../utils.js';
 import LogAppender from './log-appender.js';
+
+function fs() {
+    return require('fs');
+}
+
+function join(...paths) {
+    return require('path').join(...paths);
+}
 
 /**
  * Default configuration for FileAppender {@see FileAppender}
@@ -60,7 +66,7 @@ export default class FileAppender extends LogAppender {
      */
     initCurrentLogFile() {
         return new Promise((resolve) => {
-            this.__fileStream = fs.createWriteStream(this.config.path, { flags: 'a' });
+            this.__fileStream = fs().createWriteStream(this.config.path, { flags: 'a' });
             if (this.config.isRotatingFiles) {
                 this.rotateLogFiles().finally(() => {
                     resolve();
@@ -78,7 +84,7 @@ export default class FileAppender extends LogAppender {
      */
     rotateLogFiles() {
         return new Promise((resolve, reject) => {
-            fs.readdir(this.config.directory, (readDirErr, files) => {
+            fs().readdir(this.config.directory, (readDirErr, files) => {
                 if (readDirErr) {
                     // eslint-disable-next-line no-console
                     console.error(readDirErr);
@@ -97,7 +103,7 @@ export default class FileAppender extends LogAppender {
                 });
                 for (let i = 0; i <= files.length - this.config.numberOfFiles; i += 1) {
                     try {
-                        fs.rmSync(join(this.config.directory, files[i]));
+                        fs().rmSync(join(this.config.directory, files[i]));
                     } catch (rmErr) {
                         // eslint-disable-next-line no-console
                         console.error(rmErr);
@@ -127,7 +133,7 @@ export default class FileAppender extends LogAppender {
      */
     formatStoredLogs() {
         return new Promise((resolve, reject) => {
-            fs.readdir(this.config.directory, (err, files) => {
+            fs().readdir(this.config.directory, (err, files) => {
                 if (err) {
                     reject(err);
                     return;
@@ -135,7 +141,7 @@ export default class FileAppender extends LogAppender {
                 try {
                     files = files.filter((item) => item.startsWith(this.config.filePrefix) && item.endsWith('.log'));
                     files.forEach((item) => {
-                        fs.rmSync(join(this.config.directory, item));
+                        fs().rmSync(join(this.config.directory, item));
                     });
                     resolve();
                 } catch (e) {

@@ -30,14 +30,14 @@ describe("testing d-logger", () => {
         expect(logger.config.appenders.length).toBe(0);
     });
 
-    it("test addFileAppender", () => {
+    xit("test addFileAppender", () => {
         let logger = new DLogger();
         logger.clearAppenders();
         logger.addFileAppender(LOG_DIR, true);
         expect(logger.config.appenders.length).toBe(1);
     });
 
-    it("test existFileAppender and getFileAppenders", () => {
+    xit("test existFileAppender and getFileAppenders", () => {
         let logger = new DLogger();
         logger.addFileAppender(LOG_DIR, true);
         expect(logger.existFileAppender()).toBeTrue();

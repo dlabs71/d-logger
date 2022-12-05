@@ -28,7 +28,8 @@
             {
                 "code": 121
             }
-        ]
+        ],
+        "global-require": 0
     },
     "ignorePatterns": [
         "test",

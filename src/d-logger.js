@@ -6,6 +6,23 @@ import FileAppender from './appender/file-appender.js';
 import { LOG_LEVEL } from './constants.js';
 
 /**
+ * Function for getting default log level
+ * 1) node process argument: --debug-mode. Then default log level is debug
+ * 2) node process env property: D_LOGGER_LOG_LEVEL or VUE_APP_D_LOGGER_LOG_LEVEL
+ * @returns {string} log level {@see LOG_LEVEL}
+ */
+export function getDefaultLevel() {
+    if (typeof process !== 'undefined') {
+        if (!!process.argv && process.argv.includes('--debug-mode')) {
+            return 'debug';
+        }
+    }
+    return process.env.D_LOGGER_LOG_LEVEL
+        || process.env.VUE_APP_D_LOGGER_LOG_LEVEL
+        || 'debug';
+}
+
+/**
  * Default config for DLogger {@see DLogger}
  * appenders - list appender
  * level - log level threshold. By default - debug {@see LOG_LEVEL}.
@@ -19,9 +36,7 @@ import { LOG_LEVEL } from './constants.js';
 function defaultConfig() {
     return {
         appenders: [],
-        level: process.argv.includes('--debug-mode') ? 'debug' : process.env.D_LOGGER_LOG_LEVEL
-            || process.env.VUE_APP_D_LOGGER_LOG_LEVEL
-            || 'debug',
+        level: getDefaultLevel(),
         template: null,
         stepInStack: 6,
     };
