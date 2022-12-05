@@ -13,16 +13,29 @@ export default [{
     input: 'src/index.js',
     output: [
         {
-            file: 'dist/d-logger.min.js',
+            file: 'dist/d-logger.umd.min.js',
+            format: 'umd',
+            name: 'd-logger',
+            globals: {
+                "moment": "moment",
+                "node-emojify": "node-emojify"
+            }
+        },
+        {
+            file: 'dist/d-logger.cjs.min.js',
+            format: 'cjs',
+            name: 'd-logger'
+        },
+        {
+            file: 'dist/d-logger.esm.min.js',
             format: 'esm',
             name: 'd-logger'
         }
     ],
     plugins: [
-        del({ targets: "dist/*" }),
-        externals({ deps: true }),
+        del({targets: "dist/*"}),
+        externals({deps: true}),
         nodeResolve(),
-        commonjs(),
         babel({
             babelrc: false,
             exclude: "**/node_modules/**",
@@ -34,6 +47,7 @@ export default [{
             ],
             babelHelpers: "runtime"
         }),
+        commonjs(),
         terser()
     ],
 }];
