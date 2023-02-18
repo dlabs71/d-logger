@@ -84,7 +84,3 @@ jspm_packages
 
 # Yarn Integrity file
 .yarn-integrity
-
-# Generation test directory
-test/spec/log-d-logger-spec
-test/spec/log-file-appender-spec
