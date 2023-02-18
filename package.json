@@ -1,7 +1,7 @@
 {
     "name": "@dlabs71/d-logger",
     "private": false,
-    "version": "1.0.4",
+    "version": "2.0.0",
     "author": {
         "name": "Danila Ivanov",
         "email": "danila.a.ivanov@d-labs.ru"
@@ -30,7 +30,6 @@
         "eslint-plugin-import": "^2.26.0",
         "jasmine": "^4.5.0",
         "jasmine-console-reporter": "^3.1.0",
-        "jasmine-node": "^3.0.0",
         "requirejs": "^2.3.6",
         "rollup": "^2.68.0",
         "rollup-plugin-delete": "^2.0.0",

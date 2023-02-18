@@ -1,13 +1,6 @@
-import {DLogger, LogAppender} from "../../src/index.js";
-import {LOG_LEVEL} from "../../src/constants.js";
-import {createLogDir} from "../helpers/fs-helper.js";
-
-const LOG_DIR = "test/spec/log-d-logger-spec";
+import {DLogger, LogAppender, LOG_LEVEL} from "../../src/index.js";
 
 describe("testing d-logger", () => {
-    beforeEach(() => {
-        createLogDir(LOG_DIR);
-    });
 
     it("test stepInStack", () => {
         let logger = new DLogger({
@@ -30,23 +23,6 @@ describe("testing d-logger", () => {
         expect(logger.config.appenders.length).toBe(0);
     });
 
-    xit("test addFileAppender", () => {
-        let logger = new DLogger();
-        logger.clearAppenders();
-        logger.addFileAppender(LOG_DIR, true);
-        expect(logger.config.appenders.length).toBe(1);
-    });
-
-    xit("test existFileAppender and getFileAppenders", () => {
-        let logger = new DLogger();
-        logger.addFileAppender(LOG_DIR, true);
-        expect(logger.existFileAppender()).toBeTrue();
-        logger.addFileAppender(LOG_DIR, true, "app2");
-        expect(logger.getFileAppenders().length).toBe(2);
-        logger.clearAppenders();
-        expect(logger.existFileAppender()).toBeFalse();
-    });
-
     it("test addConsoleAppender", () => {
         let logger = new DLogger();
         logger.clearAppenders();
@@ -66,8 +42,8 @@ describe("testing d-logger", () => {
                 super({});
             }
 
-            log(strings, level = null, stepInStack = null) {
-                const message = this.creatingMessage(strings, level, stepInStack);
+            log(strings, level = null, stepInStack = null, dateL10n= null) {
+                const message = this.creatingMessage(strings, level, stepInStack, dateL10n);
                 // реализация данного метода
                 return message
             }

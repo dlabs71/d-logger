@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import DLoggerPlugin from '../../src/index.js';
+import {DLoggerPlugin} from '../../src/index.js';
 
 describe("vue.js logger", () => {
 

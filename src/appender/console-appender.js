@@ -1,5 +1,5 @@
 import LogAppender from './log-appender.js';
-import { createTemplate, templateFns, mergeObjects } from '../utils.js';
+import { createTemplate, templateFns } from '../utils.js';
 import { LOG_LEVEL2METHOD, LOG_LEVEL_COLOR } from '../constants.js';
 
 /**
@@ -21,6 +21,7 @@ function defaultConfig() {
             templateFns.message(),
         ),
         stepInStack: 6,
+        dateL10n: 'en',
     };
 }
 
@@ -33,7 +34,7 @@ export default class ConsoleAppender extends LogAppender {
      * @param {object} config - {@see defaultConfig}
      */
     constructor(config) {
-        const mergedConfig = mergeObjects(defaultConfig(), config);
+        const mergedConfig = LogAppender.mergeConfigs(defaultConfig(), config);
         super(mergedConfig);
     }
 
@@ -58,8 +59,8 @@ export default class ConsoleAppender extends LogAppender {
     /**
      * {@see LogAppender.log}
      */
-    log(strings, level = null, stepInStack = null) {
-        const message = this.creatingMessage(strings, level, stepInStack);
+    log(strings, level = null, stepInStack = null, dateL10n = null) {
+        const message = this.creatingMessage(strings, level, stepInStack, dateL10n);
         if (!message) {
             return null;
         }

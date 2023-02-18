@@ -6,10 +6,6 @@ import del from "rollup-plugin-delete";
 import externals from "rollup-plugin-node-externals";
 
 export default [{
-    external: [
-        'fs',
-        'path'
-    ],
     input: 'src/index.js',
     output: [
         {
