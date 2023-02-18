@@ -1,5 +1,4 @@
-import {ConsoleAppender} from "../../src/index.js";
-import {LOG_LEVEL} from "../../src/constants.js";
+import {ConsoleAppender, LOG_LEVEL} from "../../src/index.js";
 
 describe("testing console appender", () => {
 

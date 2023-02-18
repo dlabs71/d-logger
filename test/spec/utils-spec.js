@@ -10,7 +10,7 @@ import {
     mergeObjects,
     templateFns
 } from "../../src/utils.js";
-import {LOG_LEVEL} from "../../src/constants.js";
+import {LOG_LEVEL} from "../../src/index.js";
 import moment from "moment";
 
 describe("testing utils", () => {
@@ -64,6 +64,31 @@ describe("testing utils", () => {
         });
         console.log(info);
         expect(info).toMatch(/^DEBUG - 02\.11\.2022 12:22:29 - /);
+    });
+
+    it("test createTemplate with l10n", () => {
+        let template = createTemplate(
+            templateFns.level(),
+            templateFns.text(' - '),
+            templateFns.date("DD MMMM YYYY HH:mm:ss"),
+            templateFns.text(' - '),
+            templateFns.location(true),
+            templateFns.newLine(),
+            templateFns.message(),
+            templateFns.newLine(),
+        );
+
+        let location = getLocation(1);
+        let info = template({
+            level: "debug",
+            message: "info",
+            date: moment("02.11.2022 12:22:29", "DD.MM.YYYY HH:mm:ss"),
+            location: location,
+            dateL10n: "ru",
+
+        });
+        console.log(info);
+        expect(info).toMatch(/^DEBUG - 02 ноября 2022 12:22:29 - /);
     });
 
     it("test len", () => {

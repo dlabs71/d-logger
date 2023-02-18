@@ -61,12 +61,16 @@ export function formatLocation(location, abbreviated = false) {
  * @property newLine - function creating transition to a new line
  */
 export const templateFns = {
-    date: (dateFormat) => ({ date }) => moment(date).format(dateFormat),
+    date: (dateFormat) => ({ date, dateL10n = 'en' }) => moment(date).locale(dateL10n).format(dateFormat),
     location: (abbreviated = false) => ({ location }) => formatLocation(location, abbreviated),
     message: () => ({ message }) => message,
     text: (message) => () => emojify(message),
     level: () => ({ level }) => level.toUpperCase(),
-    levelDate: (dateFormat) => ({ level, date }) => `${moment(date).format(dateFormat)} | ${level.toUpperCase()}`,
+    levelDate: (dateFormat) => ({ level, date, dateL10n }) => {
+        const dateStr = moment(date).locale(dateL10n).format(dateFormat);
+        const levelStr = level.toUpperCase();
+        return `${dateStr} | ${levelStr}`;
+    },
     newLine: () => () => '\n',
 };
 

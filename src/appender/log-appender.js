@@ -50,17 +50,21 @@ export class LogMessageInfo {
 
     location = null;
 
+    dateL10n = 'en';
+
     /**
      * @param {string} level - logging level {@see LOG_LEVEL}
      * @param {string} message - user message for logging
      * @param {Date} date - data logging
      * @param {string} location - call log location
+     * @param {string} dateL10n - date localization (ru, en, ...). By default is "en"
      */
-    constructor(level, message, date, location) {
+    constructor(level, message, date, location, dateL10n = 'en') {
         this.level = level;
         this.message = message;
         this.date = date;
         this.location = location;
+        this.dateL10n = dateL10n;
     }
 }
 
@@ -76,7 +80,16 @@ export default class LogAppender {
      * @param {object} config {@see defaultConfig}
      */
     constructor(config) {
-        this.config = mergeObjects(defaultConfig(), config);
+        this.config = LogAppender.mergeConfigs(defaultConfig(), config);
+    }
+
+    /**
+     * The method to merge two configuration objects
+     * @param {object} baseConfig - source config object
+     * @param {object} currentConfig - target config object
+     */
+    static mergeConfigs(baseConfig, currentConfig) {
+        return mergeObjects(baseConfig, currentConfig);
     }
 
     /**
@@ -112,14 +125,18 @@ export default class LogAppender {
      * @param {string|null} level - active logging level {@see LOG_LEVEL}. By default using this.config.level
      * @param {number|null} stepInStack - number row in stack trace {@see getLocation}.
      *                                    By default using this.config.stepInStack
+     * @param {string|null} dateL10n - date localization (ru, en, ...). By default using this.config.dateL10n
      * @returns {null|LogMessageInfo} - data for templating. {@see LogMessageInfo}
      */
-    creatingMessage(strings, level = null, stepInStack = null) {
+    creatingMessage(strings, level = null, stepInStack = null, dateL10n = null) {
         if (!level) {
             level = this.config.level;
         }
         if (!stepInStack) {
             stepInStack = this.config.stepInStack;
+        }
+        if (!dateL10n) {
+            dateL10n = this.config.dateL10n;
         }
         if (!this.isAllowed(level) || !strings) {
             return null;
@@ -127,7 +144,14 @@ export default class LogAppender {
 
         const content = strings.reduce((prev, curr) => `${prev} ${this.format(curr)}`, '');
 
-        return this.getMessage(new LogMessageInfo(level, content, new Date(), getLocation(stepInStack)));
+        const messageObj = new LogMessageInfo(
+            level,
+            content,
+            new Date(),
+            getLocation(stepInStack),
+            dateL10n,
+        );
+        return this.getMessage(messageObj);
     }
 
     /**
@@ -136,10 +160,11 @@ export default class LogAppender {
      * @param {string[]} strings - logging attributes
      * @param {string|null} level - active logging level {@see LOG_LEVEL}
      * @param {number|null} stepInStack - number row in stack trace {@see getLocation}
+     * @param {string|null} dateL10n - date localization (ru, en, ...)
      * @returns {string|null} message for printing
      */
-    log(strings, level = null, stepInStack = null) {
+    log(strings, level = null, stepInStack = null, dateL10n = null) {
         // implement printing here
-        return this.creatingMessage(strings, level, stepInStack);
+        return this.creatingMessage(strings, level, stepInStack, dateL10n);
     }
 }
