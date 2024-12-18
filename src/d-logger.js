@@ -167,6 +167,6 @@ export class DLogger {
     }
 }
 
-const $log = new DLogger();
+const dlog = new DLogger();
 
-export default $log;
+export default dlog;

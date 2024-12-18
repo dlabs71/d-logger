@@ -1,38 +1,42 @@
-import Vue from 'vue';
+import {createApp} from 'vue';
 import {DLoggerPlugin} from '../../src/index.js';
 
 describe("vue.js logger", () => {
 
-    Vue.use(DLoggerPlugin);
-    const vm = new Vue();
+    const Component = {
+        render() {
+        }
+    };
+    const vm = createApp(Component, {});
+    vm.use(DLoggerPlugin);
+
     const str = 'd-logger it`s work';
 
-
     it("level error", () => {
-        expect(vm.$log.error).toBeDefined()
-        spyOn(vm.$log, "error").and.callThrough();
-        vm.$log.error(str);
-        expect(vm.$log.error).toHaveBeenCalledWith(str);
+        expect(vm.dlog.error).toBeDefined()
+        spyOn(vm.dlog, "error").and.callThrough();
+        vm.dlog.error(str);
+        expect(vm.dlog.error).toHaveBeenCalledWith(str);
     });
 
     it("level warning", () => {
-        expect(vm.$log.warning).toBeDefined()
-        spyOn(vm.$log, "warning").and.callThrough();
-        vm.$log.warning(str);
-        expect(vm.$log.warning).toHaveBeenCalledWith(str);
+        expect(vm.dlog.warning).toBeDefined()
+        spyOn(vm.dlog, "warning").and.callThrough();
+        vm.dlog.warning(str);
+        expect(vm.dlog.warning).toHaveBeenCalledWith(str);
     });
 
     it("level info", () => {
-        expect(vm.$log.info).toBeDefined()
-        spyOn(vm.$log, "info").and.callThrough();
-        vm.$log.info(str);
-        expect(vm.$log.info).toHaveBeenCalledWith(str);
+        expect(vm.dlog.info).toBeDefined()
+        spyOn(vm.dlog, "info").and.callThrough();
+        vm.dlog.info(str);
+        expect(vm.dlog.info).toHaveBeenCalledWith(str);
     });
 
     it("level debug", () => {
-        expect(vm.$log.debug).toBeDefined()
-        spyOn(vm.$log, "debug").and.callThrough();
-        vm.$log.debug(str);
-        expect(vm.$log.debug).toHaveBeenCalledWith(str);
+        expect(vm.dlog.debug).toBeDefined()
+        spyOn(vm.dlog, "debug").and.callThrough();
+        vm.dlog.debug(str);
+        expect(vm.dlog.debug).toHaveBeenCalledWith(str);
     });
 });

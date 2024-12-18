@@ -1,9 +1,10 @@
 import DLoggerPlugin from './d-logger-plugin.js';
-import $log, { DLogger } from './d-logger.js';
+import dlog, { DLogger } from './d-logger.js';
 import ConsoleAppender from './appender/console-appender.js';
 import LogAppender, { LogMessageInfo } from './appender/log-appender.js';
 import { createTemplate, templateFns } from './utils.js';
 import { LOG_LEVEL } from './constants.js';
+import {useDLog} from "./dlog-composable.js";
 
 export {
     templateFns,
@@ -12,7 +13,8 @@ export {
     ConsoleAppender,
     LogAppender,
     DLogger,
-    $log,
+    dlog,
     LOG_LEVEL,
     DLoggerPlugin,
+    useDLog
 };
