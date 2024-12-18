@@ -1,6 +1,6 @@
 # D-logger
 
-Библиотека для ведения журнала логирования JS/Vue приложений.
+Библиотека для ведения журнала логирования JS/Vue2/Vue3 приложений.
 
 [![NPM Version][npm-image]][npm-url]
 [![License][license-image]][license-url]
@@ -46,7 +46,7 @@ Vue.use(DLoggerPlugin, {
 | stepInStack  | number    | 6                         | Индекс в стеке вызовов ошибки для определения файла и позиции вызова метода логирования. Если библиотека показывает не верный файл вызова метода логирования, то необходимо поменять данный параметр.
 | dateL10n     | string    | en                        | Локализация даты в логах (en, ru, ...). Для всех аппендеров по умолчанию. |
 
-Далее вы можете использовать её через `this.$log` как в примере ниже:
+Далее вы можете использовать её через `this.dlog` как в примере ниже:
 
 **`example.vue`**
 
@@ -58,26 +58,44 @@ export default {
     name: 'example',
     methods: {
         process() {
-            this.$log.debug("Starting method process");
+            this.dlog.debug("Starting method process");
             // code method
-            this.$log.debug("Ending method process");
+            this.dlog.debug("Ending method process");
         }
     }
 }
 </script>
 ```
 
+**`example.vue (For Vue3 composition API)`**
+
+```vue
+
+<template></template>
+<script setup>
+    import {useDLog} from '@dlabs71/d-logger';
+
+    const log = useDLog();
+
+    const process = () => {
+        log.debug("Starting method process");
+        // code method
+        log.debug("Ending method process");
+    }
+</script>
+```
+
 ## Использование логгера без плагина Vue.js
 
-Для использования логгера без плагина Vue.js достаточно импортировать `$log` из `@dlabs71/d-logger`. Вы получаете, настроенный по
+Для использования логгера без плагина Vue.js достаточно импортировать `dlog` из `@dlabs71/d-logger`. Вы получаете, настроенный по
 умолчанию, экземпляр класса DLogger. Он будет использовать `ConsoleAppender` в качестве единственного и основного
 аппендера логирования ([Логгер](#section2)).
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
 function exampleFunc(param1, param2) {
-    $log.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
+    dlog.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
 }
 ```
 
@@ -85,14 +103,14 @@ function exampleFunc(param1, param2) {
 документации [Метод configure](#section221).
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.configure({
+dlog.configure({
     level: "error"
 });
 
 function exampleFunc(param1, param2) {
-    $log.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
+    dlog.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
 }
 ```
 
@@ -154,10 +172,10 @@ function exampleFunc(param1, param2) {
 **`example.js`**
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
 function exampleFunc(param1, param2) {
-    $log.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
+    dlog.info("Start exampleFunc with parameters: param1 = ", param1, ", param2 = ", param2);
 }
 ```
 
@@ -183,9 +201,9 @@ function exampleFunc(param1, param2) {
 Пример использования:
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.configure({
+dlog.configure({
     level: "error"
 });
 ```
@@ -197,9 +215,9 @@ $log.configure({
 Пример использования:
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.clearAppenders();
+dlog.clearAppenders();
 ```
 
 #### <h4 id="section223">2.2.3 Метод addConsoleAppender</h4>
@@ -217,9 +235,9 @@ $log.clearAppenders();
 Пример использования:
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.addConsoleAppender("debug", true);
+dlog.addConsoleAppender("debug", true);
 ```
 
 #### <h4 id="section224">2.2.4 Метод addCustomAppender</h4>
@@ -229,7 +247,7 @@ $log.addConsoleAppender("debug", true);
 Пример использования:
 
 ```js
-import {$log, LogAppender} from '@dlabs71/d-logger';
+import {dlog, LogAppender} from '@dlabs71/d-logger';
 
 class CustomAppender extends LogAppender {
 
@@ -244,7 +262,7 @@ class CustomAppender extends LogAppender {
     }
 }
 
-$log.addCustomAppender(new CustomAppender());
+dlog.addCustomAppender(new CustomAppender());
 ```
 
 ### <h3 id="section23">2.3 Вспомогательные методы логгера</h3>
@@ -256,9 +274,9 @@ $log.addCustomAppender(new CustomAppender());
 Пример использования:
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.logProcessEnvs();
+dlog.logProcessEnvs();
 
 //  Process envs:
 //  VUE_APP_NODE_ENV=development;
@@ -280,15 +298,15 @@ $log.logProcessEnvs();
 Пример использования:
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.dprsValue("qwerty$4", "password");
+dlog.dprsValue("qwerty$4", "password");
 // return "password:8"
 
-$log.dprsValue(null, "password");
+dlog.dprsValue(null, "password");
 // return "password:null"
 
-$log.dprsValue(undefined, "password");
+dlog.dprsValue(undefined, "password");
 // return "password:undefined"
 ```
 
@@ -299,9 +317,9 @@ $log.dprsValue(undefined, "password");
 Пример использования:
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.dprsValue({
+dlog.dprsValue({
     login: "daivanov",
     password: "qwerty$4",
     secretKey: "123"
@@ -320,15 +338,15 @@ $log.dprsValue({
 Пример использования:
 
 ```js
-import {$log} from '@dlabs71/d-logger';
+import {dlog} from '@dlabs71/d-logger';
 
-$log.len("qwerty$4");
+dlog.len("qwerty$4");
 // return 8
 
-$log.len(null);
+dlog.len(null);
 // return null
 
-$log.len(undefined);
+dlog.len(undefined);
 // return undefined
 ```
 
@@ -346,7 +364,7 @@ $log.len(undefined);
 Пример использования:
 
 ```js
-import {$log, templateFns, createTemplate} from '@dlabs71/d-logger';
+import {dlog, templateFns, createTemplate} from '@dlabs71/d-logger';
 
 let template = createTemplate(
         // выводим уровень логирования
@@ -373,7 +391,7 @@ let template = createTemplate(
 // user logging message
 // 
 
-$log.configure({
+dlog.configure({
     level: "debug",
     template: template
 });

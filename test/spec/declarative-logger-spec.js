@@ -1,33 +1,33 @@
-import {$log} from '../../src/index.js';
+import {dlog} from '../../src/index.js';
 
 describe("declarative logger", () => {
     const str = 'd-logger it`s work';
 
     it("level error", () => {
-        expect($log.error).toBeDefined()
-        spyOn($log, "error").and.callThrough();
-        $log.error(str);
-        expect($log.error).toHaveBeenCalledWith(str);
+        expect(dlog.error).toBeDefined()
+        spyOn(dlog, "error").and.callThrough();
+        dlog.error(str);
+        expect(dlog.error).toHaveBeenCalledWith(str);
     });
 
     it("level warning", () => {
-        expect($log.warning).toBeDefined()
-        spyOn($log, "warning").and.callThrough();
-        $log.warning(str);
-        expect($log.warning).toHaveBeenCalledWith(str);
+        expect(dlog.warning).toBeDefined()
+        spyOn(dlog, "warning").and.callThrough();
+        dlog.warning(str);
+        expect(dlog.warning).toHaveBeenCalledWith(str);
     });
 
     it("level info", () => {
-        expect($log.info).toBeDefined()
-        spyOn($log, "info").and.callThrough();
-        $log.info(str);
-        expect($log.info).toHaveBeenCalledWith(str);
+        expect(dlog.info).toBeDefined()
+        spyOn(dlog, "info").and.callThrough();
+        dlog.info(str);
+        expect(dlog.info).toHaveBeenCalledWith(str);
     });
 
     it("level debug", () => {
-        expect($log.debug).toBeDefined()
-        spyOn($log, "debug").and.callThrough();
-        $log.debug(str);
-        expect($log.debug).toHaveBeenCalledWith(str);
+        expect(dlog.debug).toBeDefined()
+        spyOn(dlog, "debug").and.callThrough();
+        dlog.debug(str);
+        expect(dlog.debug).toHaveBeenCalledWith(str);
     });
 });
